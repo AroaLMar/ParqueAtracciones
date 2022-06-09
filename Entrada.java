@@ -1,50 +1,37 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Date;
 
 public class Entrada {
 
 
-    private Integer asiento;
+    private int asiento;
     private float precio;
-    private ArrayList <Ticket> tickets;
-    private Estado estado;
-
-    public void añadirTickets(Ticket tickets) {
+    private String estado;
+    private Ticket tickets;
 
 
-        this.tickets.add(tickets);
-
-
-
-
-    }
-
-
-    public enum Estado {
-        DISPONIBLE, VENDIDA;
-    }
-
-    public Entrada(Integer asiento, float precio, Estado estado) {
+    public void validarEntrada(int asiento, float precio, String estado) throws ParametrosNoValidos {
         this.asiento = asiento;
+        if(asiento<=0)throw new ParametrosNoValidos("El asiento no puede ser menor o igual a 0");
         this.precio = precio;
+        if(precio<=0)throw new ParametrosNoValidos("El precio no puede ser menor o igual a 0");
         this.estado = estado;
-        this.tickets=new ArrayList<Ticket>();
+        if(estado==null)throw new ParametrosNoValidos("El estado de la entrada no puede ser nulo");
+        if(!estado.equals("vendida")&&(!estado.equals("disponible")))throw new ParametrosNoValidos("El estado de la entrada no es valido");
+    }
+
+    public Entrada(int asiento, float precio, String estado) throws ParametrosNoValidos {
+       validarEntrada(asiento, precio, estado);
+        this.tickets= tickets;
     }
 
 
 
-
-
-
-
-    public Entrada(Integer asiento, float precio, Estado estado,ArrayList<Ticket> tickets) {
-        this.asiento = asiento;
-        this.precio = precio;
-        this.estado = estado;
+    public Entrada(int asiento, float precio, String estado,Ticket tickets) throws ParametrosNoValidos {
+        validarEntrada(asiento, precio, estado);
         this.tickets=tickets;
     }
+
 
 
 
