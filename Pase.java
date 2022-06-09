@@ -1,31 +1,40 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 
 public class Pase {
 
 
 
-    private Date fecha;
-    private int horainicio;
-    private int horafin;
-    private ArrayList<Entrada> entradas;
+    private LocalDate fecha;
+    private LocalDateTime horainicio;
+    private  LocalDateTime horafin;
+    private HashSet<Entrada> entradas;
 
-    public Pase(Date fecha, int horainicio, int horafin,ArrayList entrada) throws Exception {
+    public void validarPase(LocalDate fecha, LocalDateTime horainicio, LocalDateTime horafin) throws Exception {
         this.fecha = fecha;
+        if (fecha == null) throw new ParametrosNoValidos("La fecha no puede ser nula");
         this.horainicio = horainicio;
+        if (horainicio == null) throw new ParametrosNoValidos("El horario de inicio no puede ser nulo");
         this.horafin = horafin;
-        if(horafin<horainicio)throw new Exception("La hora de fin no puede ser menor a la hora de inicio");
-        this.entradas = entrada;
+        if (horainicio.isAfter(horafin)) throw new ParametrosNoValidos("La hora de fin no puede ser anterior a la hora de inicio");
     }
 
-    public Pase(Date fecha, int horainicio, int horafin) throws Exception {
-        this.fecha = fecha;
-        this.horainicio = horainicio;
-        this.horafin = horafin;
-        if(horafin<horainicio)throw new Exception("La hora de fin no puede ser menor a la hora de inicio");
-        this.entradas=new ArrayList<Entrada>();
+    public Pase(LocalDate fecha, LocalDateTime horainicio, LocalDateTime horafin,HashSet entrada) throws Exception {
+      validarPase(fecha, horainicio, horafin);
+      this.entradas = entrada;
+        if (entradas == null) throw new ParametrosNoValidos("Las entradas no pueden ser nulas");
+        if (entradas.isEmpty()) throw new ParametrosNoValidos("Al menos una entrada");
+
+    }
+
+    public Pase(LocalDate fecha, LocalDateTime horainicio, LocalDateTime horafin) throws Exception {
+        validarPase(fecha, horainicio, horafin);
+        this.entradas= new HashSet<Entrada>();
+
     }
 
 
